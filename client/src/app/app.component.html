@@ -1,0 +1,18 @@
+<div class="header"></div>
+<div fxLayout="row" fxLayoutAlign="space-around center" class="main">
+    <mat-card class="mat-elevation-z8" style="width: 600px;">
+      <mat-card-title><h1>Welcome to Simple Quiz Builder</h1></mat-card-title>
+      <mat-card-content>
+        <router-outlet></router-outlet>
+      </mat-card-content>
+      <mat-divider inset></mat-divider>
+      <mat-card-actions>
+        <div *ngIf="!(auth.isAuthenticated$ | async)">
+          <app-login-button></app-login-button>
+        </div>
+        <div *ngIf="auth.isAuthenticated$ | async">
+          <app-logout-button></app-logout-button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+</div>

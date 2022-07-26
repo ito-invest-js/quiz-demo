@@ -1,0 +1,70 @@
+<form [formGroup]="form" (ngSubmit)="saveQuiz(form)" class="add-quiz">
+  <mat-form-field appearance="fill" class="fullwidth">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title" #titleInput>
+    <mat-error>Title is required</mat-error>
+  </mat-form-field>
+  <h2>Questions</h2>
+  <div formArrayName="questions" class="fullwidth">
+      <div *ngFor="let question of questions().controls; let questionIndex=index" class="fullwidth">
+        <mat-card [formGroupName]="questionIndex" class="question">
+          <mat-form-field appearance="fill" class="fullwidth">
+            <mat-label>Question</mat-label>
+            <input matInput formControlName="question" #questionInput>
+            <mat-error>Question is required</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type" #typeInput (selectionChange)="onChangeQuestionType(questionIndex, $event.value)">
+              <mat-option [value]="0" selected>
+                Single
+              </mat-option>
+              <mat-option [value]="1">
+                Multiple
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div formArrayName="answers" *ngIf="this.questions().at(questionIndex).get('type')?.value == 0">
+            <div *ngFor="let answer of answers(questionIndex).controls; let answerIndex=index">
+              <div [formGroupName]="answerIndex" class="fullwidth" fxLayout="row" fxLayoutAlign="space-around center">
+                <mat-form-field appearance="fill" fxFlex>
+                  <mat-label>Answer</mat-label>
+                  <input matInput formControlName="answer" #anwserInput>
+                  <mat-error>Answer is required</mat-error>
+                </mat-form-field>
+                <mat-checkbox fxFlex="nogrow" formControlName="isCorrect" class='is_correct'>Is Correct</mat-checkbox>
+              </div>
+            </div>
+            <button mat-button (click)="removeQuestion(questionIndex)">Remove Question</button>
+          </div>
+          <div formArrayName="answers" *ngIf="this.questions().at(questionIndex).get('type')?.value == 1">
+            <div *ngFor="let answer of answers(questionIndex).controls; let answerIndex=index">
+              <div [formGroupName]="answerIndex" class="fullwidth" fxLayout="row" fxLayoutAlign="space-around center">
+                <button fxFlex="none" class='remove_answer' mat-mini-fab color="warn" aria-label="Delete answer" (click)="removeAnswer(questionIndex,answerIndex)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <mat-form-field appearance="fill" fxFlex>
+                  <mat-label>Answer</mat-label>
+                  <input matInput formControlName="answer" #anwserInput>
+                  <mat-error>Answer is required</mat-error>
+                </mat-form-field>
+                <mat-checkbox fxFlex="nogrow" formControlName="isCorrect" class='is_correct'>Is Correct</mat-checkbox>
+              </div>
+            </div>
+            <button mat-button type="button" (click)="addAnswer(questionIndex)">Add Answer</button>
+            <button mat-button (click)="removeQuestion(questionIndex)">Remove Question</button>
+          </div>
+          <mat-error *ngIf="this.questions().at(questionIndex).hasError('validQuestionError')">Exactly one answer shall be correct for single questions.</mat-error>
+        </mat-card>
+      </div>
+  </div>
+  <div *ngIf="questions().length < 10">
+    <button class='add_question' type="button" mat-mini-fab color="warn" aria-label="Add question" (click)="addQuestion(form)">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div fxLayout="row" class="submit fullwidth" fxLayoutAlign="space-between center">
+    <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Submit</button>
+    <button mat-raised-button color="secondary" [routerLink]="'/quiz-list'">Cancel</button>
+  </div>
+</form>

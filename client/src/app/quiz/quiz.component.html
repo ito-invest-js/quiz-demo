@@ -1,0 +1,23 @@
+<div class="add-quiz" *ngIf="quiz">
+    <h1>{{ quiz.title }}</h1>
+    <mat-card class="question" *ngFor="let question of quiz.questions; let questionIndex=index">
+        <h3>{{ question.question }}</h3>
+        <div *ngFor="let answer of question.answers; let answerIndex=index" fxLayout="row">
+            <div fxFlex>
+                <h3 class="answer">{{ answer.answer }}</h3>
+            </div>
+            <mat-checkbox class="checkbox" fxFlex="nogrow" (change)="changeAnswer(question, answer, $event.checked)"></mat-checkbox>
+        </div>
+        <mat-error *ngIf="question.error">Exactly one answer shall be selected for single questions.</mat-error>
+    </mat-card>
+    
+    <div fxLayout="row" class="submit" fxLayoutAlign="space-between center">
+        <button mat-raised-button color="primary" (click)="evaluateQuiz()">Evaluate</button>
+        <button [routerLink]="'/quiz-browse'" mat-button>Browse quiz</button>
+    </div>
+    
+    <div class="evaluation" *ngIf="evaluation">
+        <h3>{{ evaluation }}</h3>
+    </div>
+
+</div>

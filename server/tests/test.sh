@@ -1,0 +1,2 @@
+curl -X POST 'http://localhost:8008/api/quiz/' -d '{"title": "Quiz Title","questions": [{"question": "Test Question","answers": [{"answer": "Test Answer","isCorrect": false}]}]}' -H "content-type: application/json"
+  

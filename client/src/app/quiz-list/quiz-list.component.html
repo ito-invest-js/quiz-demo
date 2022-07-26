@@ -1,0 +1,17 @@
+<div class="main">
+  <div *ngIf="error">
+    <p>Error: {{ error }}</p>
+  </div>
+  
+  <div class="quiz-container" *ngIf="quiz">
+    <div *ngFor="let q of quiz">
+      <div class="quiz" fxFlex fxLayoutAlign="center center" >
+          <button mat-button color="warn" fxFlex="nogrow"><mat-icon aria-hidden="false" aria-label="delete quiz" fontIcon="delete" (click)="deleteQuiz(q.id)"></mat-icon></button>
+          <span display-2 fxFlex [routerLink]="['/quiz',q.id]" style="cursor: pointer;">{{ q.title }}</span>
+          <button mat-button color="primary" fxFlex="nogrow"><mat-icon aria-hidden="false" aria-label="copy quiz link" fontIcon="link" (click)="copyQuizLink(q.id)"></mat-icon></button>
+      </div>
+      <!--<button class="delete-btn" (click)="deleteTodo(todo.id)"> DELETE TODO</button>-->
+    </div>
+    <button mat-button color="primary" [routerLink]="'/quiz-add'"><mat-icon aria-hidden="false" aria-label="add quiz" fontIcon="add"></mat-icon></button>
+  </div>
+</div>
