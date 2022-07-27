@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+  client:
+    build: client
+    ports:
+      - "8880:80"
+    labels:
+      - traefik.http.routers.quiz-demo-client.rule=Host(`quiz-demo.ito-invest.lu`)
+      - traefik.http.routers.quiz-demo-client.tls=true
+      - traefik.http.routers.quiz-demo-client.tls.certresolver=letsencrypt
+  server:
+    build: server
+    ports:
+      - "8888:8080"
+    labels:
+      - traefik.http.routers.quiz-demo-api.rule=Host(`quiz-api.ito-invest.lu`)
+      - traefik.http.routers.quiz-demo-api.tls=true
+      - traefik.http.routers.quiz-demo-api.tls.certresolver=letsencrypt
+    volumes:
+      - ./server/db/:/usr/src/app/db/
